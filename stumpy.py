@@ -12,7 +12,6 @@ class Memory(object):
 
 # Are the given series of bits set?
 def bset(i, b): return (i & b) == b
-def bclr(i, b): return (i & b) == 0
 
 
 # Test the condition codes for a given condition in mathsy-format given in the
@@ -52,10 +51,11 @@ class Stump(object):
 		if self.instr_type == 2 or (instr&0b11==0): val,carry = (self[(instr>>5) & 0b111]),0
 		else:
 			# Get the carry bit and shift the value
-			carry, val = (self[(instr>>5) & 0b111])&0x0001, ((self[(instr>>5) & 0b111])>>1)&0x7FFF
+			carry = (self[(instr>>5) & 0b111])&0x0001
+			val = ((self[(instr>>5) & 0b111])>>1)&0x7FFF
 			
 			# Set the top bit and the carry register
-			val = val | (([val>>14, carry, self[c]][(instr&0b11) - 1]) << 15)
+			val |= (([val>>14, carry, self[c]][(instr&0b11) - 1]) << 15)
 		
 		# Set the other flags
 		self[n],self[z],self[v],self[c] = bset(val,0x8000),val==0,0,carry

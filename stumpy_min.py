@@ -3,7 +3,6 @@ class Memory(object):
 	def __getitem__(self, a)   : return self.memory[a]
 	def __setitem__(self, a, v): self.memory[a] = v
 def bset(i, b): return (i & b) == b
-def bclr(i, b): return (i & b) == 0
 def test_cc(s, cc):
 	for f in "nzvc": cc = cc.replace(f, "s[%s]"%f)
 	for f, r in [("!","not "), ("."," and "), ("+"," or ")]: cc = cc.replace(f, r)
@@ -19,8 +18,9 @@ class Stump(object):
 	def geta(self, instr):
 		if self.instr_type == 2 or (instr&0b11==0): val,carry = (self[(instr>>5) & 0b111]),0
 		else:
-			carry, val = (self[(instr>>5) & 0b111])&0x0001, ((self[(instr>>5) & 0b111])>>1)&0x7FFF
-			val = val | (([val>>14, carry, self[c]][(instr&0b11) - 1]) << 15)
+			carry = (self[(instr>>5) & 0b111])&0x0001
+			val = ((self[(instr>>5) & 0b111])>>1)&0x7FFF
+			val |= (([val>>14, carry, self[c]][(instr&0b11) - 1]) << 15)
 		self[n],self[z],self[v],self[c] = bset(val,0x8000),val==0,0,carry
 		return val
 	def getb(self, instr):
