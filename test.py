@@ -12,13 +12,13 @@ class Memory(Memory_):
 	rdebug = False
 	def __setitem__(self, a, v):
 		if self.debug:
-			print "     memory[%04d] = %04x"%(a,v&0xFFFF)
+			print "     memory[%04x] = %04x"%(a,v&0xFFFF)
 		Memory_.__setitem__(self, a, v)
 	
 	def __getitem__(self, a):
 		val = Memory_.__getitem__(self, a)
 		if self.rdebug:
-			print "     memory[%04d]== %04x"%(a,val&0xFFFF)
+			print "     memory[%04x]== %04x"%(a,val&0xFFFF)
 		return val
 
 # Stump wrapper which has a printable register bank
@@ -118,8 +118,38 @@ t = 0
 
 print "     %s"%(stump)
 while True:
-	raw_input()
-	
+	while True:
+		pc, p, n, z, v, c = 7, 7, 8, 9, 10, 11
+		cmd = raw_input("     > ")
+		if cmd == "":
+			break
+		elif cmd.startswith("m"):
+			cmd = cmd[1:]
+			if cmd.find("=") != -1:
+				addr, val = cmd.split("=")
+				addr = addr.strip()
+				val = val.strip()
+				memory[eval(addr)] = eval(val)
+				print "     memory[%04x] =%04x"%(eval(addr), stump[eval(addr)]&0xFFFF)
+			else:
+				addr = cmd.strip()
+				print "     memory[%04x]==%04x"%(eval(addr), memory[eval(addr)]&0xFFFF)
+		elif cmd.startswith("r"):
+			cmd = cmd[1:]
+			if cmd.find("=") != -1:
+				addr, val = cmd.split("=")
+				addr = addr.strip()
+				val = val.strip()
+				oen = stump.cc_en
+				stump.cc_en = True
+				stump[eval(addr)] = eval(val)
+				stump.cc_en = oen
+				print "     r%d           =%04x"%(eval(addr), stump[eval(addr)]&0xFFFF)
+			elif len(cmd):
+				addr = cmd.strip()
+				print "     r%d          ==%04x"%(eval(addr), stump[eval(addr)]&0xFFFF)
+			else:
+				print "     %s"%(stump)
 	print "%03d: memory[%04x]== %s"%(t, stump[7], ins_str(memory[stump[7]]))
 	
 	memory.rdebug = True
