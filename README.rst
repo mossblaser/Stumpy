@@ -39,6 +39,14 @@ one. This is used to help compact the representations of branch conditions and
 while not strictly legit, it can be considered "safe" as it never executes user
 code and most importantly, it *does* work!
 
+Correctness
+```````````
+I have run it against the supplied test programs which while broad are not
+exhaustive and it has passed. While I believe the implementation is correct to
+the specification, don't rely on it! If you do notice a bug, please feel free to
+submit a fix (please explain the bug, how to reproduce and explain your fix --
+this is code-golf code!) or report it (with a suitable example case).
+
 Usage
 `````
 The emulator is just a library and doesn't do anything by itself. To use it:
@@ -116,11 +124,3 @@ An assembler and example binaries for the STUMP can be found on department
 computers in ``$COMP22111/sasm`` and ``$COMP22111/Cadence/core/test*.s``
 respectively. Unfortunately they are university property and so I cannot
 distribute these -- sorry!
-
-Correctness
------------
-I have run it against the supplied test programs which while broad are not
-exhaustive and it has passed. While I believe the implementation is correct to
-the specification, don't rely on it! If you do notice a bug, please feel free to
-submit a fix (please explain the bug, how to reproduce and explain your fix --
-this is code-golf code!) or report it (with a suitable example case).
