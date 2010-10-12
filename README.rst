@@ -1,6 +1,9 @@
 Stumpy: A Code-Golf, Python STUMP CPU Emulator
 ==============================================
 
+A small (50 line) STUMP CPU emulator written in Python along with a
+quick-and-dirty example "test-bench" program for running STUMP binaries.
+
 The STUMP CPU
 -------------
 The STUMP is a simple 16-bit RISC microprocessor built as an example during the
@@ -15,6 +18,8 @@ The emulator is designed to be consistent with the specification however as it
 is *not* a simulator, it is stepped by full fetch-execute-writeback cycles
 rather than clock cycles.
 
+Size and Style
+``````````````
 This project was an enterprise of code golf_ and so the code is not specifically
 optimised for speed and simply just for source code size. While the emulator is
 correct and accurately emulates all external interfaces, it fits on 50 lines and
@@ -23,6 +28,19 @@ found in ``stumpy.py`` which is laid out in a semi-readable way (or at least in
 the way I developed it) with comments. ``stumpy_min.py`` is the same file but
 with all comments and empty lines removed.
 
+I have avoided using "cheats" like using semi-colons to concatenate code onto
+one line and using list expansion to place multiple assignments on one line
+(though in the latter case I do this where it is appropriate or intuative). Some
+areas are spaced very inconsistently and not at all in order to fit within a
+reasonable line length.
+
+Finally, yes, ``grep`` this for ``eval`` and you will be disapointed to discover
+one. This is used to help compact the representations of branch conditions and
+while not strictly legit, it can be considered "safe" as it never executes user
+code and most importantly, it *does* work!
+
+Usage
+`````
 The emulator is just a library and doesn't do anything by itself. To use it:
 
 1. Create a ``Memory`` object (passing the size in 16-bit words, usually 1<<16).
@@ -77,6 +95,9 @@ At the prompt, the following commands are available:
 
 Tip: Whitespace is optional in the above arguments, e.g. ``r1=0xFFFF`` is
 equivalent to ``r 1 = 0xFFFF``.
+
+Note: And yes, numerical values are just passed straight into an eval with no
+sanity checking -- what-cha gonna' do about it, punk?
 
 When the CPU is stepped, the time (in steps) is printed (in binary) followed by
 the instruction as loaded from the location indicated by the PC followed by a
