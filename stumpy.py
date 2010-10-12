@@ -81,7 +81,7 @@ class Stump(object):
 		val = sign_extend((a + b + cin) & 0xFFFF, 16)
 		
 		# Update Sign, Zero and Carry status regs and store the result
-		s[(i>>8)&0b111],s[n],s[z],s[c]=val&0xFFFF,bset(val,0x8000),val==0,((val&0xFFFF)+cin)<(a&0xFFFF)
+		s[(i>>8)&0b111],s[n],s[z],s[c]=val&0xFFFF,bset(val,0x8000),val==0,(val&0xFFFF)<(a&0xFFFF)
 		
 		# Update Overflow bit (If the two operands have the same sign and the sign
 		# changes then an overflow has occurred). Invert the carry out if inv. This

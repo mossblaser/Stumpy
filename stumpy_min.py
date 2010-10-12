@@ -30,7 +30,7 @@ class Stump(object):
 	def add(s, i, cin, inv = False):
 		a, b = s.geta(i), (s.getb(i) ^ (-1 * inv))
 		val = sign_extend((a + b + cin) & 0xFFFF, 16)
-		s[(i>>8)&0b111],s[n],s[z],s[c]=val&0xFFFF,bset(val,0x8000),val==0,((val&0xFFFF)+cin)<(a&0xFFFF)
+		s[(i>>8)&0b111],s[n],s[z],s[c]=val&0xFFFF,bset(val,0x8000),val==0,(val&0xFFFF)<(a&0xFFFF)
 		s[v],s[c]=((a<0)and(b<0)and(val>=0))or((a>=0)and(b>=0)and(val<0)), s[c]^inv
 	def step(self):
 		instr, self[pc] = self.memory[self[pc]], self[pc]+1
